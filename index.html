@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>hahaha</title>
+
+  <style>
+    body{
+      background:black;
+      color:white;
+      font-family:Arial, sans-serif;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      margin:0;
+      gap:6px;
+      padding:20px;
+    }
+
+    .line{
+      font-size:18px;
+      cursor:pointer;
+    }
+
+    #history{
+      margin-top:20px;
+      width:90%;
+      max-width:600px;
+      border:1px solid white;
+      padding:10px;
+      display:none;
+    }
+
+    .item{
+      margin:4px 0;
+      color:lime;
+      font-size:14px;
+    }
+
+    h2{
+      margin:0 0 10px 0;
+      font-size:16px;
+      color:white;
+      font-weight:normal;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="line">hahaha</div>
+  <div class="line">hahaha</div>
+  <div class="line">hahaha</div>
+  <div class="line">hahaha</div>
+  <div class="line">hahaha</div>
+
+  <div class="line" onclick="showHistory()">
+    hahaha
+  </div>
+
+  <div class="line">hahaha</div>
+  <div class="line">hahaha</div>
+  <div class="line">hahaha</div>
+  <div class="line">hahaha</div>
+
+  <div id="history">
+    <h2>history berada di website</h2>
+    <div id="list"></div>
+  </div>
+
+  <script>
+    let historyData =
+      JSON.parse(localStorage.getItem("historyWebsite"))
+      || [];
+
+    // tiap 5 detik selama masih di website,
+    // otomatis masuk history baru
+    setInterval(() => {
+
+      const now = new Date();
+
+      const waktu =
+        `${String(now.getDate()).padStart(2,'0')}/` +
+        `${String(now.getMonth()+1).padStart(2,'0')}/` +
+        `${now.getFullYear()} ` +
+        `${String(now.getHours()).padStart(2,'0')}:` +
+        `${String(now.getMinutes()).padStart(2,'0')}:` +
+        `${String(now.getSeconds()).padStart(2,'0')}`;
+
+      historyData.push(waktu);
+
+      localStorage.setItem(
+        "historyWebsite",
+        JSON.stringify(historyData)
+      );
+
+    }, 5000);
+
+    let timeoutHistory;
+
+    function showHistory(){
+
+      const box = document.getElementById("history");
+      const list = document.getElementById("list");
+
+      list.innerHTML = "";
+
+      historyData.forEach((item) => {
+        list.innerHTML += `
+          <div class="item">${item}</div>
+        `;
+      });
+
+      box.style.display = "block";
+
+      clearTimeout(timeoutHistory);
+
+      setTimeout(() => {
+        box.style.display = "none";
+      }, 2000);
+    }
+  </script>
+
+</body>
+</html>
